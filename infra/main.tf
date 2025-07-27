@@ -5,7 +5,7 @@ provider "aws" {
 data "aws_caller_identity" "current" {}
 
 resource "aws_iam_role" "lambda" {
-  name               = "${var.app_name}-lambda"
+  name_prefix        = "${var.app_name}-lambda-"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume.json
 }
 
