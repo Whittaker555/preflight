@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"mime/multipart"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/yourusername/preflight/internal/cost"
@@ -20,27 +21,37 @@ func AnalysePlan(c *gin.Context) {
 	c.JSON(http.StatusOK, analyse(plan))
 }
 
-// UploadPlan handles multipart file uploads of Terraform plan JSON.
-// The uploaded file should be provided under the "file" form field.
+// UploadPlan handles analysis of a Terraform plan. It accepts either a
+// multipart file upload under the "file" form field or a raw JSON body with
+// Content-Type set to "application/json".
 func UploadPlan(c *gin.Context) {
-	file, err := c.FormFile("file")
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "plan file required"})
-		return
-	}
-
-	var opened multipart.File
-	opened, err = file.Open()
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "unable to read file"})
-		return
-	}
-	defer opened.Close()
-
 	var plan models.TerraformPlan
-	if err := json.NewDecoder(opened).Decode(&plan); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid plan file"})
-		return
+
+	ct := c.GetHeader("Content-Type")
+	if strings.HasPrefix(ct, "application/json") {
+		if err := c.ShouldBindJSON(&plan); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid JSON"})
+			return
+		}
+	} else {
+		file, err := c.FormFile("file")
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "plan file required"})
+			return
+		}
+
+		var opened multipart.File
+		opened, err = file.Open()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "unable to read file"})
+			return
+		}
+		defer opened.Close()
+
+		if err := json.NewDecoder(opened).Decode(&plan); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid plan file"})
+			return
+		}
 	}
 
 	c.JSON(http.StatusOK, analyse(plan))
