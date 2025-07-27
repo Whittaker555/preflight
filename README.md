@@ -85,3 +85,19 @@ return the path to the saved file.
 ## Postman Collection
 
 The `postman` directory contains a ready-to-use Postman collection and environment for testing the API's health check and plan upload endpoints.
+
+## GitHub Actions Deployment
+
+The repository contains a `Deploy` workflow that packages the API as an AWS Lambda function and applies the Terraform in `infra/`.
+To run it you must configure the following secrets in your GitHub repository:
+
+- `AWS_REGION` – AWS region where the Lambda and API Gateway will be created
+- `APP_NAME` – name for the Lambda function and API Gateway resources
+- `AWS_DEPLOY_ROLE` – ARN of an IAM role that GitHub Actions is allowed to assume
+
+### Creating the deploy role
+
+1. In the AWS console open **IAM → Identity providers** and create an OIDC provider for `https://token.actions.githubusercontent.com` (if you do not already have one).
+2. Create a new role for **Web identity** that trusts this provider and restrict the subject to your repository, e.g. `repo:<your org>/<your repo>:*`.
+3. Attach policies that permit managing Lambda, API Gateway and IAM resources (using `AdministratorAccess` is easiest for initial tests).
+4. Copy the role ARN and store it as the `AWS_DEPLOY_ROLE` secret in GitHub.
