@@ -2,3 +2,8 @@
 *.exe
 *.log
 .env
+
+# Terraform
+infra/.terraform/
+infra/terraform.tfstate*
+build/

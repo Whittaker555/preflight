@@ -1,12 +1,16 @@
 package main
 
 import (
-    "github.com/gin-gonic/gin"
-    "github.com/joho/godotenv"
     "log"
     "os"
-    "github.com/yourusername/preflight/internal/routes"
+
+    ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
+    "github.com/aws/aws-lambda-go/lambda"
+    "github.com/gin-gonic/gin"
+    "github.com/joho/godotenv"
+
     "github.com/yourusername/preflight/internal/logger"
+    "github.com/yourusername/preflight/internal/routes"
 )
 
 func main() {
@@ -18,6 +22,13 @@ func main() {
 
     r := gin.Default()
     routes.RegisterRoutes(r)
+
+    // If running inside AWS Lambda, use the Lambda handler
+    if os.Getenv("AWS_LAMBDA_FUNCTION_NAME") != "" {
+        ginLambda := ginadapter.New(r)
+        lambda.Start(ginLambda.Proxy)
+        return
+    }
 
     port := os.Getenv("PORT")
     if port == "" {
