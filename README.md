@@ -95,7 +95,6 @@ Two workflows manage the AWS resources:
 
 Both workflows require these secrets in your GitHub repository:
 
-- `APP_NAME` – name for the Lambda function and API Gateway resources
 - `AWS_DEPLOY_ROLE` – ARN of an IAM role that GitHub Actions is allowed to assume
 - `STATE_BUCKET` – name of the S3 bucket where the Terraform state will be stored (only required for **Deploy Infra**)
 
