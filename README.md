@@ -56,6 +56,21 @@ curl -X POST \
 The response includes the number of resources, the total monthly cost estimate
 and a list of each resource with its individual estimated cost.
 
+## Uploading analysis results
+
+If you need to store the JSON output from a previous analysis you can POST it
+back to the API:
+
+```bash
+curl -X POST \
+  -H "Content-Type: application/json" \
+  --data @result.json \
+  http://localhost:3000/api/v1/plan/result/upload
+```
+
+The API will write the uploaded JSON to a file under the `results` directory and
+return the path to the saved file.
+
 ## Postman Collection
 
 The `postman` directory contains a ready-to-use Postman collection and environment for testing the API's health check and plan upload endpoints.

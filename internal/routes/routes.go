@@ -10,4 +10,5 @@ func RegisterRoutes(r *gin.Engine) {
 	api.GET("/health", handlers.HealthCheck)
 	api.POST("/plan/analyse", handlers.AnalysePlan)
 	api.POST("/plan/upload", handlers.UploadPlan)
+	api.POST("/plan/result/upload", handlers.UploadResult)
 }
