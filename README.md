@@ -90,8 +90,8 @@ The `postman` directory contains a ready-to-use Postman collection and environme
 
 Two workflows manage the AWS resources:
 
-* **Deploy Lambda** – builds the application and updates the Lambda function code.
-* **Deploy Infra** – applies the Terraform in `infra/`.
+* **Deploy Lambda** – builds the application and updates the Lambda function code. It runs automatically when code changes are pushed or can be triggered manually.
+* **Deploy Infra** – applies the Terraform in `infra/`. This workflow must be triggered manually from the Actions tab.
 
 Both workflows require these secrets in your GitHub repository:
 
