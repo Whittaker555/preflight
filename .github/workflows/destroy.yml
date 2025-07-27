@@ -15,17 +15,14 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: eu-west-2
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.6.6
       - name: Terraform Init
-        run: terraform -chdir=infra init -backend-config="bucket=${STATE_BUCKET}" -backend-config="key=${APP_NAME}/terraform.tfstate" -backend-config="region=${AWS_REGION}"
+        run: terraform -chdir=infra init -backend-config="bucket=${STATE_BUCKET}" -backend-config="key=${APP_NAME}/terraform.tfstate" -backend-config="region=eu-west-2"
         env:
           STATE_BUCKET: ${{ secrets.STATE_BUCKET }}
           APP_NAME: ${{ secrets.APP_NAME }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
       - name: Terraform Destroy
-        run: terraform -chdir=infra destroy -auto-approve -var aws_region=${AWS_REGION}
-        env:
-          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: terraform -chdir=infra destroy -auto-approve -var aws_region=eu-west-2

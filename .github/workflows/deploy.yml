@@ -22,7 +22,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: eu-west-2
       - name: Build lambda zip
         run: |
           mkdir -p build
