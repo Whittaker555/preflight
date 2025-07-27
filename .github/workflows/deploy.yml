@@ -3,9 +3,6 @@ name: Deploy
 on:
   workflow_dispatch:
 
-env:
-  AWS_REGION: ${{ secrets.AWS_REGION }}
-  APP_NAME: preflight
 
 jobs:
   deploy:
@@ -19,15 +16,15 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ secrets.AWS_REGION }}
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.6.6
       - name: Build lambda zip
         run: |
           mkdir -p build
-          GOOS=linux GOARCH=amd64 go build -o build/${{ env.APP_NAME }} ./cmd
-          cd build && zip ${{ env.APP_NAME }}.zip ${{ env.APP_NAME }} && cd ..
+          GOOS=linux GOARCH=amd64 go build -o build/${{ secrets.APP_NAME }} ./cmd
+          cd build && zip ${{ secrets.APP_NAME }}.zip ${{ secrets.APP_NAME }} && cd ..
       - name: Terraform Init
         run: terraform -chdir=infra init
       - name: Terraform Apply
