@@ -23,8 +23,8 @@ jobs:
       - name: Build lambda zip
         run: |
           mkdir -p build
-          GOOS=linux GOARCH=amd64 go build -o build/preflight ./cmd
-          cd build && zip preflight.zip preflight && cd ..
+          GOOS=linux GOARCH=amd64 go build -o build/bootstrap ./cmd
+          cd build && zip preflight.zip bootstrap && cd ..
       - name: Terraform Init
         run: terraform -chdir=infra init
       - name: Terraform Apply
