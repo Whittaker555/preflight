@@ -54,6 +54,31 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "Upload Analysis Result",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/plan/result/upload",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "plan",
+            "result",
+            "upload"
+          ]
+        }
+      },
+      "response": []
     }
   ]
 }
