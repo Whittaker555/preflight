@@ -88,12 +88,19 @@ The `postman` directory contains a ready-to-use Postman collection and environme
 
 ## GitHub Actions Deployment
 
-The repository contains a `Deploy` workflow that packages the API as an AWS Lambda function and applies the Terraform in `infra/`.
-To run it you must configure the following secrets in your GitHub repository:
+Two workflows manage the AWS resources:
+
+* **Deploy Lambda** – builds the application and updates the Lambda function code.
+* **Deploy Infra** – applies the Terraform in `infra/`.
+
+Both workflows require these secrets in your GitHub repository:
 
 - `AWS_REGION` – AWS region where the Lambda and API Gateway will be created
 - `APP_NAME` – name for the Lambda function and API Gateway resources
 - `AWS_DEPLOY_ROLE` – ARN of an IAM role that GitHub Actions is allowed to assume
+- `STATE_BUCKET` – name of the S3 bucket where the Terraform state will be stored (only required for **Deploy Infra**)
+
+The bucket specified by `STATE_BUCKET` must exist before running the **Deploy Infra** workflow.
 
 ### Creating the deploy role
 
