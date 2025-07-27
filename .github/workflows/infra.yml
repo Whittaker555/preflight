@@ -27,11 +27,10 @@ jobs:
         run: |
           mkdir -p build
           GOOS=linux GOARCH=amd64 go build -o build/bootstrap ./cmd
-          cd build && zip preflight.zip bootstrap && cd ..
+          cd build && zip preflight-api.zip bootstrap && cd ..
       - name: Terraform Init
-        run: terraform -chdir=infra init -backend-config="bucket=${STATE_BUCKET}" -backend-config="key=${APP_NAME}/terraform.tfstate" -backend-config="region=eu-west-2"
+        run: terraform -chdir=infra init -backend-config="bucket=${STATE_BUCKET}" -backend-config="key=preflight-api/terraform.tfstate" -backend-config="region=eu-west-2"
         env:
           STATE_BUCKET: ${{ secrets.STATE_BUCKET }}
-          APP_NAME: ${{ secrets.APP_NAME }}
       - name: Terraform Apply
         run: terraform -chdir=infra apply -auto-approve

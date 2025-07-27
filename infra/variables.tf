@@ -7,6 +7,6 @@ variable "aws_region" {
 variable "app_name" {
   description = "Name of the application"
   type        = string
-  default     = "preflight"
+  default     = "preflight-api"
 }
 
