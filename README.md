@@ -48,11 +48,14 @@ With the server running and the example JSON saved as `plan.json` you can send i
 using `curl`:
 
 ```bash
-curl -X POST \ 
-  -H "Content-Type: application/json" \
-  --data @plan.json \
-  http://localhost:3000/api/v1/plan/analyse
+curl -X POST \
+  -F "file=@plan.json" \
+  http://localhost:3000/api/v1/plan/upload 
 ```
 
 The response includes the number of resources, the total monthly cost estimate
 and a list of each resource with its individual estimated cost.
+
+## Postman Collection
+
+The `postman` directory contains a ready-to-use Postman collection and environment for testing the API's health check and plan upload endpoints.
