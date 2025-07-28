@@ -68,42 +68,17 @@ then posting `plan.json` to the API.
 ## Analysing a plan
 
 With the server running and the example JSON saved as `plan.json` you can send
-it to the `/plan/upload` endpoint either as a file upload or directly as JSON.
-
-### Uploading a file
-
-```bash
-curl -X POST \
-  -F "file=@plan.json" \
-  http://localhost:3000/api/v1/plan/upload
-```
-
-### Sending raw JSON
+it to the `/plan` endpoint as raw JSON:
 
 ```bash
 curl -X POST \
   -H "Content-Type: application/json" \
   --data @plan.json \
-  http://localhost:3000/api/v1/plan/upload
+  http://localhost:3000/api/v1/plan
 ```
 
 The response includes the number of resources, the total monthly cost estimate
 and a list of each resource with its individual estimated cost.
-
-## Uploading analysis results
-
-If you need to store the JSON output from a previous analysis you can POST it
-back to the API:
-
-```bash
-curl -X POST \
-  -H "Content-Type: application/json" \
-  --data @result.json \
-  http://localhost:3000/api/v1/plan/result/upload
-```
-
-The API will write the uploaded JSON to a file under the `results` directory and
-return the path to the saved file.
 
 ## Postman Collection
 
