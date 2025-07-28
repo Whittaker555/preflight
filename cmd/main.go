@@ -34,8 +34,8 @@ func main() {
 
 	// If running inside AWS Lambda, use the Lambda handler
 	if os.Getenv("AWS_LAMBDA_FUNCTION_NAME") != "" {
-		ginLambda := ginadapter.New(r)
-		lambda.Start(ginLambda.Proxy)
+		ginLambda := ginadapter.NewV2(r)
+		lambda.Start(ginLambda.ProxyWithContext)
 		return
 	}
 
