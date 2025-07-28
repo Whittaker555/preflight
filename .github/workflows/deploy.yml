@@ -2,14 +2,6 @@ name: Deploy Lambda
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'cmd/**'
-      - 'internal/**'
-      - 'go.mod'
-      - 'go.sum'
-      - '.github/workflows/deploy.yml'
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
