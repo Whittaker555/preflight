@@ -18,7 +18,7 @@ jobs:
       - name: Build lambda zip
         run: |
           mkdir -p build
-          GOOS=linux GOARCH=amd64 go build -o build/bootstrap ./cmd
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o build/bootstrap ./cmd
           cd build && zip preflight-api.zip bootstrap && cd ..
       - name: Update Lambda code
         run: aws lambda update-function-code --function-name preflight-api --zip-file fileb://build/preflight-api.zip
