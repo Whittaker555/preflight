@@ -33,11 +33,15 @@ func TestAnalysePlanHandler(t *testing.T) {
 	}
 
 	var resp struct {
+		Provider       string  `json:"provider"`
 		TotalResources int     `json:"total_resources"`
 		TotalCost      float64 `json:"total_monthly_cost_estimate"`
 	}
 	if err := json.Unmarshal(w.Body.Bytes(), &resp); err != nil {
 		t.Fatalf("failed to unmarshal response: %v", err)
+	}
+	if resp.Provider != "aws" {
+		t.Errorf("expected provider aws, got %s", resp.Provider)
 	}
 	if resp.TotalResources != 2 {
 		t.Errorf("expected 2 resources, got %d", resp.TotalResources)
