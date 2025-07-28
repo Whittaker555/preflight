@@ -32,9 +32,17 @@ go build -o preflight ./cmd
 ./preflight
 ```
 
-To run it as a Lambda function instead, package the binary and apply the
-Terraform configuration in `infra/` which creates the Lambda and API Gateway
-resources.
+To run it as a Lambda function instead, build a Linux binary with `CGO_ENABLED=0`
+and package it for the custom runtime:
+
+```bash
+mkdir -p build
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o build/bootstrap ./cmd
+cd build && zip preflight-api.zip bootstrap && cd ..
+```
+
+Then apply the Terraform configuration in `infra/` which creates the Lambda and
+API Gateway resources.
 
 ## Terraform plan JSON example
 
