@@ -3,15 +3,38 @@
 PreFlight is a simple Go service that accepts a JSON representation of a
 Terraform plan and returns a summary with a very basic cost estimate.
 
+## Prerequisites
+
+- Go **1.24** or newer (as defined in `go.mod`)
+- Terraform **1.5** or newer (see `infra/versions.tf`)
+
 ## Building and running
+
+The API can run locally or as an AWS Lambda function. When running in Lambda,
+`AWS_LAMBDA_FUNCTION_NAME` is set automatically and the handler is invoked via the
+Lambda runtime. When running locally the server listens on the port specified in
+`PORT` (default: `3000`). Environment variables can be placed in a `.env` file at
+the project root.
+
+Example `.env`:
+
+```env
+PORT=3000
+```
+
+To start the server locally:
 
 ```bash
 # build the server
 go build -o preflight ./cmd
 
-# run (listens on port 3000 by default)
+# run
 ./preflight
 ```
+
+To run it as a Lambda function instead, package the binary and apply the
+Terraform configuration in `infra/` which creates the Lambda and API Gateway
+resources.
 
 ## Terraform plan JSON example
 
