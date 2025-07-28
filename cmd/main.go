@@ -1,40 +1,50 @@
 package main
 
 import (
-    "log"
-    "os"
+	"log"
+	"os"
 
-    ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
-    "github.com/aws/aws-lambda-go/lambda"
-    "github.com/gin-gonic/gin"
-    "github.com/joho/godotenv"
+	"github.com/aws/aws-lambda-go/lambda"
+	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 
-    "github.com/whittaker555/preflight/internal/logger"
-    "github.com/whittaker555/preflight/internal/routes"
+	"github.com/whittaker555/preflight/internal/logger"
+	"github.com/whittaker555/preflight/internal/routes"
 )
 
+type runner interface {
+	Run(addr ...string) error
+}
+
+func runServer(r runner, port string) error {
+	logger.Log.Infof("PreFlight API running on port %s", port)
+	return r.Run(":" + port)
+}
+
 func main() {
-    if err := godotenv.Load(); err != nil {
-        log.Println("No .env file found, using defaults")
-    }
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found, using defaults")
+	}
 
-    logger.Init()
+	logger.Init()
 
-    r := gin.Default()
-    routes.RegisterRoutes(r)
+	r := gin.Default()
+	routes.RegisterRoutes(r)
 
-    // If running inside AWS Lambda, use the Lambda handler
-    if os.Getenv("AWS_LAMBDA_FUNCTION_NAME") != "" {
-        ginLambda := ginadapter.New(r)
-        lambda.Start(ginLambda.Proxy)
-        return
-    }
+	// If running inside AWS Lambda, use the Lambda handler
+	if os.Getenv("AWS_LAMBDA_FUNCTION_NAME") != "" {
+		ginLambda := ginadapter.New(r)
+		lambda.Start(ginLambda.Proxy)
+		return
+	}
 
-    port := os.Getenv("PORT")
-    if port == "" {
-        port = "3000"
-    }
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
 
-    logger.Log.Infof("PreFlight API running on port %s", port)
-    r.Run(":" + port)
+	if err := runServer(r, port); err != nil {
+		logger.Log.Fatalf("server error: %v", err)
+	}
 }
