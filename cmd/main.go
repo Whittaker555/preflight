@@ -13,6 +13,15 @@ import (
 	"github.com/whittaker555/preflight/internal/routes"
 )
 
+type runner interface {
+	Run(addr ...string) error
+}
+
+func runServer(r runner, port string) error {
+	logger.Log.Infof("PreFlight API running on port %s", port)
+	return r.Run(":" + port)
+}
+
 func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Println("No .env file found, using defaults")
@@ -35,6 +44,7 @@ func main() {
 		port = "3000"
 	}
 
-	logger.Log.Infof("PreFlight API running on port %s", port)
-	r.Run(":" + port)
+	if err := runServer(r, port); err != nil {
+		logger.Log.Fatalf("server error: %v", err)
+	}
 }
