@@ -21,7 +21,7 @@ jobs:
       - name: Build lambda zip
         run: |
           mkdir -p build
-          GOOS=linux GOARCH=amd64 go build -o build/bootstrap ./cmd
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o build/bootstrap ./cmd
           cd build && zip preflight-api.zip bootstrap && cd ..
       - name: Terraform Init
         run: terraform -chdir=infra init -backend-config="bucket=${STATE_BUCKET}" -backend-config="key=preflight-api/terraform.tfstate" -backend-config="region=eu-west-2"
