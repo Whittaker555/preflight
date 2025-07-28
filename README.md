@@ -84,7 +84,10 @@ return the path to the saved file.
 
 ## Postman Collection
 
-The `postman` directory contains a ready-to-use Postman collection and environment for testing the API's health check and plan upload endpoints.
+The `postman` directory contains a ready-to-use Postman collection with separate environments for local and dev testing:
+
+* `PreFlight.postman_environment.json` – points to a local API running on `http://localhost:3000`
+* `PreFlight.dev.postman_environment.json` – points to the remote dev API
 
 ## GitHub Actions Deployment
 
