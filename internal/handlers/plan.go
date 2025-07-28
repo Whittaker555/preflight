@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/yourusername/preflight/internal/cost"
-	"github.com/yourusername/preflight/internal/models"
+	"github.com/whittaker555/preflight/internal/cost"
+	"github.com/whittaker555/preflight/internal/models"
 )
 
 func AnalysePlan(c *gin.Context) {

@@ -9,8 +9,8 @@ import (
     "github.com/gin-gonic/gin"
     "github.com/joho/godotenv"
 
-    "github.com/yourusername/preflight/internal/logger"
-    "github.com/yourusername/preflight/internal/routes"
+    "github.com/whittaker555/preflight/internal/logger"
+    "github.com/whittaker555/preflight/internal/routes"
 )
 
 func main() {

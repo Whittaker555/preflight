@@ -2,7 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/yourusername/preflight/internal/handlers"
+	"github.com/whittaker555/preflight/internal/handlers"
 )
 
 func RegisterRoutes(r *gin.Engine) {

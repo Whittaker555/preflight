@@ -1,4 +1,4 @@
-module github.com/yourusername/preflight
+module github.com/whittaker555/preflight
 
 go 1.24.3
 
