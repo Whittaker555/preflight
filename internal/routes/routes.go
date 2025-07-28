@@ -8,7 +8,5 @@ import (
 func RegisterRoutes(r *gin.Engine) {
 	api := r.Group("/api/v1")
 	api.GET("/health", handlers.HealthCheck)
-	api.POST("/plan/analyse", handlers.AnalysePlan)
-	api.POST("/plan/upload", handlers.UploadPlan)
-	api.POST("/plan/result/upload", handlers.UploadResult)
+	api.POST("/plan", handlers.AnalysePlan)
 }

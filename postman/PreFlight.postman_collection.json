@@ -13,69 +13,27 @@
         "header": [],
         "url": {
           "raw": "{{base_url}}/api/v1/health",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "v1",
-            "health"
-          ]
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "health"]
         }
       },
       "response": []
     },
     {
-      "name": "Upload Terraform Plan",
+      "name": "Analyse Terraform Plan",
       "request": {
         "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "formdata",
-          "formdata": [
-            {
-              "key": "file",
-              "type": "file",
-              "src": ""
-            }
-          ]
-        },
-        "url": {
-          "raw": "{{base_url}}/api/v1/plan/upload",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "v1",
-            "plan",
-            "upload"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Upload Analysis Result",
-      "request": {
-        "method": "POST",
-        "header": [],
+        "header": [
+          {"key": "Content-Type", "value": "application/json"}
+        ],
         "body": {
           "mode": "raw",
-          "raw": ""
+          "raw": "{\n  \"resource_changes\": [\n    {\n      \"address\": \"aws_instance.example\",\n      \"type\": \"aws_instance\",\n      \"name\": \"example\",\n      \"change\": {\n        \"actions\": [\"create\"]\n      }\n    },\n    {\n      \"address\": \"aws_s3_bucket.data\",\n      \"type\": \"aws_s3_bucket\",\n      \"name\": \"data\",\n      \"change\": {\n        \"actions\": [\"create\"]\n      }\n    }\n  ]\n}"
         },
         "url": {
-          "raw": "{{base_url}}/api/v1/plan/result/upload",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "v1",
-            "plan",
-            "result",
-            "upload"
-          ]
+          "raw": "{{base_url}}/api/v1/plan",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "plan"]
         }
       },
       "response": []
